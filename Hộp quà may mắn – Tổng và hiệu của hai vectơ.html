@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><title>Hộp quà may mắn – Tổng và hiệu của hai vectơ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#fff7ec;--card:#fff;--ink:#2b2340;--mut:#6b6485;--pri:#7c3aed;--ok:#16a34a;--bad:#dc2626;--bd:#e7dcf5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#1b1630;--card:#272046;--ink:#f1ecff;--mut:#b4a9d6;--pri:#a78bfa;--bd:#41386b}}
+:root[data-theme=dark]{--bg:#1b1630;--card:#272046;--ink:#f1ecff;--mut:#b4a9d6;--pri:#a78bfa;--bd:#41386b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.9 system-ui,"Segoe UI",Roboto,sans-serif}
+#app{max-width:860px;margin:auto;padding:14px}h1{font-size:1.3rem;margin:.2em 0;text-align:center}
+.st{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0}.st span{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:0 14px}
+.sec{font-weight:700;margin:10px 0 2px;color:var(--pri)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:10px}
+.box{border:0;border-radius:14px;padding:6px 0;font:700 15px/1.3 inherit;background:linear-gradient(135deg,#f472b6,#fb923c);color:#fff;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.2)}
+.box b{display:block;font-size:26px}.box.p2{background:linear-gradient(135deg,#38bdf8,#6366f1)}.box.p3{background:linear-gradient(135deg,#34d399,#0d9488)}
+.box:hover{transform:translateY(-2px) rotate(-2deg)}.box.ok{background:var(--ok)}.box.bad{background:#6b7280}.box:disabled{cursor:default;transform:none}
+#M{position:fixed;inset:0;background:rgba(10,5,30,.6);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:calc(12px + env(safe-area-inset-top,0px)) 10px 20px}#M[hidden]{display:none}
+.card{background:var(--card);border-radius:16px;max-width:720px;width:100%;padding:16px}
+.hd{display:flex;justify-content:space-between;color:var(--mut);font-size:.9rem}.bar{height:8px;background:var(--bd);border-radius:6px;overflow:hidden;margin:4px 0 10px}.bar i{display:block;height:100%;background:var(--pri);transition:width 1s linear}
+.q{font-size:1.1rem;margin:6px 0}.opt,.tf button{display:block;width:100%;text-align:left;margin:6px 0;padding:8px 12px;border:2px solid var(--bd);border-radius:10px;background:transparent;color:var(--ink);font:inherit;cursor:pointer}
+.opt.s,.tf button.s{border-color:var(--pri);background:rgba(124,58,237,.15)}.opt.c,.tf button.c{border-color:var(--ok);background:rgba(22,163,74,.18)}.opt.w,.tf button.w{border-color:var(--bad);background:rgba(220,38,38,.15)}
+.tf{border-top:1px dashed var(--bd);padding:4px 0}.tf div{display:flex;gap:8px}.tf button{width:auto;flex:1;text-align:center;margin:2px 0}
+input{font:inherit;padding:8px;border:2px solid var(--bd);border-radius:10px;width:160px;background:transparent;color:var(--ink)}
+.go,.cl{margin-top:10px;padding:9px 22px;border:0;border-radius:24px;background:var(--pri);color:#fff;font:700 1rem inherit;cursor:pointer}
+.sol{background:rgba(124,58,237,.1);border-radius:10px;padding:8px 12px;margin-top:8px}.gift{font-size:1.15rem;text-align:center;margin:8px 0;animation:pop .6s}
+@keyframes pop{0%{transform:scale(.3) rotate(-20deg)}70%{transform:scale(1.2)}100%{transform:none}}
+.fig{width:250px;max-width:100%;display:block;margin:4px auto;background:rgba(56,189,248,.12);border-radius:10px}.fig text{fill:var(--ink);font:italic 15px serif}
+.v{position:relative;display:inline-block;margin-top:.3em;line-height:1.3}.v::before{content:"→";position:absolute;top:-.7em;left:0;right:0;text-align:center;font-size:.8em;line-height:1}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.85em;line-height:1.3;margin:0 2px}.fr i,.fr b{font-style:normal;font-weight:400;padding:0 3px}.fr i{border-bottom:1px solid currentColor}
+.sq .ov{border-top:1px solid currentColor;padding:0 2px}
+</style></head><body><div id="app">
+<h1>🎁 Hộp quà may mắn – Tổng và hiệu của hai vectơ (Toán 10)</h1>
+<div class="st"><span>⭐ Điểm: <b id="sc">0</b></span><span>📦 Đã mở: <b id="dn">0</b>/22</span></div>
+<div class="sec">Phần 1 – Trắc nghiệm nhiều lựa chọn (câu 1–12)</div><div class="grid" id="g1"></div>
+<div class="sec">Phần 2 – Trắc nghiệm đúng/sai (câu 13–16)</div><div class="grid" id="g2"></div>
+<div class="sec">Phần 3 – Trả lời ngắn (câu 17–22)</div><div class="grid" id="g3"></div>
+<p style="color:var(--mut);font-size:.9rem">Chọn một hộp quà bất kì để trả lời. Trả lời đúng sẽ mở được quà may mắn (điểm thưởng). Nhận biết 10đ · Thông hiểu 15đ · Đúng/sai 5đ mỗi ý · Trả lời ngắn 25đ.</p>
+</div><div id="M" hidden></div>
+<script>
+const F=s=>s.replace(/\{([^|}]+)\|([^}]+)\}/g,'<span class=fr><i>$1</i><b>$2</b></span>').replace(/√\(([^)]+)\)/g,'<span class=sq>√<span class=ov>$1</span></span>').replace(/\[([^\]]+)\]/g,'<span class=v>$1</span>');
+const fig=(e,h,v,r)=>`<svg class=fig viewBox="0 0 250 180"><defs><marker id=m markerWidth=8 markerHeight=8 refX=6 refY=3 orient=auto><path d="M0,0L6,3L0,6z" style="fill:var(--ink)"/></marker></defs><g stroke="var(--ink)" stroke-width="2.5" fill="none"><path d="M40 140H190" marker-end="url(#m)"/><path d="M40 140V30" marker-end="url(#m)"/><path d="M40 140L190 30" marker-end="url(#m)" stroke="#dc2626"/><path d="M190 140V30M40 30H190" stroke-dasharray="4" stroke-width="1"/></g><text x="105" y="160">${h}</text><text x="10" y="90">${v}</text><text x="120" y="70" fill="#dc2626">${r}</text><text x="12" y="172" style="font-size:22px">${e}</text></svg>`;
+const fig2=`<svg class=fig viewBox="0 0 250 180"><defs><marker id=m markerWidth=8 markerHeight=8 refX=6 refY=3 orient=auto><path d="M0,0L6,3L0,6z" style="fill:var(--ink)"/></marker></defs><g stroke="var(--ink)" stroke-width="2.5" fill="none"><path d="M125 150L38 100" marker-end="url(#m)"/><path d="M125 150L212 100" marker-end="url(#m)"/><path d="M125 150V50" marker-end="url(#m)" stroke="#dc2626"/><path d="M38 100L125 50L212 100" stroke-dasharray="4" stroke-width="1"/></g><text x="45" y="130">F₁ = 100 N</text><text x="150" y="130">F₂ = 100 N</text><text x="132" y="75" fill="#dc2626">F = ?</text><text x="105" y="140">120°</text><text x="112" y="175" style="font-size:20px">🛒</text></svg>`;
+const Q=[
+{p:1,lv:'Nhận biết',t:60,q:'Cho ba điểm A, B, C bất kì. Theo quy tắc ba điểm, [AB]+[BC] bằng:',o:['[AC]','[CA]','[BA]','[0]'],a:0,s:'Quy tắc ba điểm: điểm cuối của vectơ thứ nhất trùng điểm đầu của vectơ thứ hai thì [AB]+[BC]=[AC]. Chọn A.'},
+{p:1,lv:'Nhận biết',t:60,q:'Với ba điểm O, A, B bất kì, vectơ [AB] bằng:',o:['[OA]−[OB]','[OB]−[OA]','[OA]+[OB]','[OA]+[BO]'],a:1,s:'Quy tắc hiệu: [AB]=[AO]+[OB]=−[OA]+[OB]=[OB]−[OA]. Chọn B.'},
+{p:1,lv:'Nhận biết',t:60,q:'ABCD là hình bình hành. Khi đó [AB]+[AD] bằng:',o:['[BD]','[AC]','[DB]','[CA]'],a:1,s:'Quy tắc hình bình hành: [AB]+[AD]=[AC] (đường chéo xuất phát từ A). Chọn B.'},
+{p:1,lv:'Nhận biết',t:60,q:'Với mọi vectơ [a], tổng [a]+(−[a]) bằng:',o:['2[a]','[a]','[0]','−[a]'],a:2,s:'−[a] là vectơ đối của [a] (cùng độ dài, ngược hướng) nên [a]+(−[a])=[0]. Chọn C.'},
+{p:1,lv:'Nhận biết',t:60,q:'I là trung điểm của đoạn thẳng AB. Khi đó [IA]+[IB] bằng:',o:['[AB]','[BA]','2[IA]','[0]'],a:3,s:'I là trung điểm nên IA=IB và [IA], [IB] ngược hướng, tức hai vectơ đối nhau. Vậy [IA]+[IB]=[0]. Chọn D.'},
+{p:1,lv:'Thông hiểu',t:120,q:'Cho tam giác đều ABC cạnh a. Độ dài |[AB]+[AC]| bằng:',o:['a','a√3','2a','{a√3|2}'],a:1,s:'Gọi M là trung điểm BC. Theo quy tắc hình bình hành, [AB]+[AC]=2[AM]. Trong tam giác đều, AM={a√3|2}. Vậy |[AB]+[AC]|=2·{a√3|2}=a√3. Chọn B.'},
+{p:1,lv:'Thông hiểu',t:120,q:'Cho tam giác đều ABC cạnh a. Độ dài |[AB]−[AC]| bằng:',o:['a√3','0','2a','a'],a:3,s:'Quy tắc hiệu: [AB]−[AC]=[CB]. Vậy |[AB]−[AC]|=CB=a. Chọn D.'},
+{p:1,lv:'Thông hiểu',t:120,q:'Cho hình vuông ABCD cạnh a. Độ dài |[AB]+[AC]+[AD]| bằng:',o:['a√2','2a','2a√2','3a'],a:2,s:'Vì ABCD là hình vuông nên [AB]+[AD]=[AC]. Suy ra [AB]+[AC]+[AD]=2[AC]. Đường chéo AC=a√2 nên độ dài là 2a√2. Chọn C.'},
+{p:1,lv:'Thông hiểu',t:120,q:'Cho hai vectơ [a], [b] ngược hướng, |[a]|=5 và |[b]|=3. Khi đó |[a]+[b]| bằng:',o:['8','2','4','15'],a:1,s:'Hai vectơ ngược hướng thì độ dài tổng bằng hiệu hai độ dài (lớn trừ nhỏ): 5−3=2. Chọn B.'},
+{p:1,lv:'Thông hiểu',t:120,q:'ABCD là hình bình hành. Khi đó [AB]−[AD] bằng:',o:['[AC]','[DB]','[BD]','[CA]'],a:1,s:'[AB]−[AD]=[AB]+[DA]=[DA]+[AB]=[DB] (quy tắc ba điểm). Chọn B.'},
+{p:1,lv:'Thông hiểu',t:120,q:'Cho bốn điểm A, B, C, D bất kì. Rút gọn [AB]−[AD]+[CD] ta được:',o:['[CB]','[BC]','[AC]','[0]'],a:0,s:'[AB]−[AD]=[DB]. Khi đó [DB]+[CD]=[CD]+[DB]=[CB]. Chọn A.'},
+{p:1,lv:'Thông hiểu',t:120,q:'G là trọng tâm tam giác ABC. Đẳng thức nào sau đây đúng?',o:['[GA]+[GB]+[GC]=[0]','[GA]+[GB]=[GC]','[GA]+[GB]+[GC]=[AB]','[GA]+[GB]−[GC]=[0]'],a:0,s:'Tính chất trọng tâm: [GA]+[GB]+[GC]=[0]. Do đó [GA]+[GB]=−[GC] nên B sai; C sai; D sai vì [GA]+[GB]−[GC]=−2[GC]≠[0]. Chọn A.'},
+{p:2,t:180,q:'Cho hình chữ nhật ABCD có AB=3, AD=4, tâm O. Xét tính đúng, sai của các mệnh đề:',sub:[['[AB]+[AD]=[AC]',1,'Quy tắc hình bình hành (hình chữ nhật cũng là hình bình hành).'],['[OA]+[OC]=[0]',1,'O là trung điểm AC nên [OA], [OC] là hai vectơ đối nhau.'],['[AB]−[AD]=[BD]',0,'Đúng phải là [AB]−[AD]=[DB], đối của [BD].'],['|[AB]−[AD]|=7',0,'|[AB]−[AD]|=|[DB]|=BD=√(3²+4²)=5, không phải 7.']]},
+{p:2,t:180,f:fig('🚢','[F₁]','[F₂]','[F]'),q:'Hai tàu kéo cùng kéo một tàu lớn bằng hai sợi cáp vuông góc nhau, với lực kéo [F₁] (30 N) và [F₂] (40 N) như hình vẽ. Xét tính đúng, sai:',sub:[['Hợp lực tác dụng lên tàu lớn là [F₁]+[F₂]',1,'Hợp lực là tổng các lực thành phần (quy tắc hình bình hành).'],['Độ lớn hợp lực bằng 50 N',1,'|[F₁]+[F₂]|=√(30²+40²)=√2500=50 N (hai lực vuông góc, hợp lực là đường chéo hình chữ nhật).'],['Độ lớn hợp lực bằng 70 N',0,'70 N chỉ xảy ra khi hai lực cùng hướng; ở đây vuông góc nên là 50 N.'],['Nếu hai lực ngược hướng nhau thì độ lớn hợp lực bằng 10 N',1,'Ngược hướng: 40−30=10 N.']]},
+{p:2,t:180,f:fig('🚤','[v₂] (dòng nước)','[v₁]','[v]'),q:'Một chiếc thuyền chạy trên sông. Vận tốc riêng của thuyền [v₁] có độ lớn 4 m/s, hướng vuông góc với bờ; dòng nước chảy dọc bờ với vận tốc [v₂] có độ lớn 3 m/s (hình vẽ). Xét tính đúng, sai:',sub:[['Vận tốc của thuyền so với bờ là [v₁]+[v₂]',1,'Vận tốc thực = vận tốc riêng + vận tốc dòng nước.'],['Độ lớn vận tốc thực của thuyền là 5 m/s',1,'|[v₁]+[v₂]|=√(4²+3²)=5 m/s (hai vectơ vuông góc).'],['Độ lớn vận tốc thực của thuyền là 7 m/s',0,'7 m/s chỉ khi hai vận tốc cùng hướng; ở đây vuông góc nên là 5 m/s.'],['Nếu thuyền đi ngược dòng với vận tốc riêng 4 m/s thì độ lớn vận tốc so với bờ là 7 m/s',0,'Ngược hướng nên độ lớn là 4−3=1 m/s.']]},
+{p:2,t:180,q:'Cho tam giác ABC, M là trung điểm BC, G là trọng tâm tam giác. Xét tính đúng, sai:',sub:[['[AB]+[AC]=2[AM]',1,'Quy tắc trung điểm: M là trung điểm BC.'],['[GA]+[GB]+[GC]=[0]',1,'Tính chất trọng tâm tam giác.'],['[AB]−[AC]=[BC]',0,'Đúng phải là [AB]−[AC]=[CB].'],['[MB]+[MC]=[0]',1,'M là trung điểm BC nên [MB], [MC] đối nhau.']]},
+{p:3,t:240,q:'Cho hình chữ nhật ABCD có AB=6, AD=8. Tính |[AB]+[AD]|.',a:10,s:'[AB]+[AD]=[AC] (quy tắc hình bình hành). Do đó |[AB]+[AD]|=AC=√(6²+8²)=√100=10.'},
+{p:3,t:240,f:fig('✈️','[v₁] (hướng đông)','[v₂]','[v]'),q:'Một máy bay bay về hướng đông với vận tốc [v₁] có độ lớn 160 km/h; gió thổi theo hướng bắc với vận tốc [v₂] có độ lớn 120 km/h (hình vẽ). Tính độ lớn vận tốc thực của máy bay (km/h).',a:200,s:'Vận tốc thực [v]=[v₁]+[v₂]. Hai vectơ vuông góc nên |[v]|=√(160²+120²)=√(25600+14400)=√40000=200 km/h.'},
+{p:3,t:240,q:'Cho hình thoi ABCD cạnh 8, góc BAD=120°. Tính |[AB]+[AD]|.',a:8,s:'[AB]+[AD]=[AC]. Vì góc BAD=120° nên góc ABC=180°−120°=60°. Tam giác ABC có BA=BC=8 và góc B=60° nên đều, suy ra AC=8. Vậy |[AB]+[AD]|=8.'},
+{p:3,t:240,q:'Cho hai vectơ [a], [b] có |[a]|=5, |[b]|=12 và |[a]+[b]|=13. Tính |[a]−[b]|.',a:13,s:'Dựng hình bình hành OACB với [OA]=[a], [OB]=[b] thì [OC]=[a]+[b] và [BA]=[a]−[b]. Tam giác OAC có OA=5, AC=OB=12, OC=13 và 5²+12²=13² nên vuông tại A. Do đó OACB là hình chữ nhật, hai đường chéo bằng nhau: |[a]−[b]|=BA=OC=13.'},
+{p:3,t:240,q:'Cho tam giác đều ABC cạnh 3√3, G là trọng tâm. Tính |[GA]+[GB]|.',a:3,s:'Vì [GA]+[GB]+[GC]=[0] nên [GA]+[GB]=−[GC], suy ra |[GA]+[GB]|=GC. Đường cao tam giác đều: h={3√3·√3|2}={9|2}. Trọng tâm cách đỉnh {2|3} đường cao nên GC={2|3}·{9|2}=3. Đáp số: 3.'},
+{p:3,t:240,f:fig2,q:'Hai người cùng kéo một chiếc xe bằng hai sợi dây hợp với nhau góc 120°, lực kéo của mỗi người có độ lớn 100 N (hình vẽ). Tính độ lớn hợp lực tác dụng lên xe (N).',a:100,s:'Dựng hình bình hành OACB với [OA]=[F₁], [OB]=[F₂]; hợp lực [F]=[OC]=[F₁]+[F₂]. OACB là hình thoi cạnh 100 có góc AOB=120° nên góc OAC=60°, tam giác OAC đều ⇒ OC=100. Vậy hợp lực có độ lớn 100 N.'}
+];
+const $=id=>document.getElementById(id),M=$('M'),done=Array(22).fill(0),L='ABCD';let sc=0,cur=null,sel,left,iv,fin=0;
+Q.forEach((q,i)=>{const b=document.createElement('button');b.className='box p'+q.p;b.innerHTML='<b>🎁</b>Câu '+(i+1);b.onclick=()=>openQ(i);b.id='b'+i;$('g'+q.p).appendChild(b)});
+function openQ(i){if(done[i]||cur!=null)return;cur=i;const q=Q[i];left=q.t;sel=q.p==1?-1:q.p==2?[null,null,null,null]:'';
+let h=`<div class=card><div class=hd><span>Câu ${i+1} · Phần ${q.p}${q.lv?' · '+q.lv:''}</span><span>⏱ <b id=tm>${left}</b>s</span></div><div class=bar><i id=br style="width:100%"></i></div><div id=bd><div class=q>${F(q.q)}</div>${q.f||''}`;
+if(q.p==1)h+=q.o.map((o,j)=>`<button class=opt data-o=${j}>${L[j]}. ${F(o)}</button>`).join('');
+else if(q.p==2)h+=q.sub.map((s,j)=>`<div class=tf><div style="display:block">${'abcd'[j]}) ${F(s[0])}</div><div><button data-j=${j} data-v=1>Đúng</button><button data-j=${j} data-v=0>Sai</button></div></div>`).join('');
+else h+='<p>Đáp số: <input id=ans inputmode=decimal autocomplete=off></p>';
+M.innerHTML=h+'</div><button class=go id=go>Chốt đáp án</button></div>';M.hidden=false;
+iv=setInterval(()=>{left--;$('tm').textContent=left;$('br').style.width=left/q.t*100+'%';if(left<=0)submit()},1000);
+$('go').onclick=submit}
+M.onclick=e=>{const t=e.target;if(cur==null||!t.dataset)return;if(t.dataset.o!=null){sel=+t.dataset.o;M.querySelectorAll('.opt').forEach(b=>b.classList.toggle('s',b===t))}
+if(t.dataset.j!=null){const j=+t.dataset.j;sel[j]=+t.dataset.v;M.querySelectorAll(`[data-j="${j}"]`).forEach(b=>b.classList.toggle('s',b===t))}}
+function submit(){clearInterval(iv);const q=Q[cur];let ok,pts=0,sol='';
+if(q.p==1){ok=sel===q.a;pts=ok?(q.t==60?10:15):0;sol=`<b>Đáp án đúng: ${L[q.a]}</b><br>`+F(q.s)}
+else if(q.p==2){let n=0;sol=q.sub.map((s,j)=>{const g=sel[j]===s[1];if(g)n++;return `<div>${g?'✅':'❌'} ${'abcd'[j]}) <b>${s[1]?'Đúng':'Sai'}</b> – ${F(s[2])}</div>`}).join('');pts=n*5;ok=n>=3;sol+=`<div>Bạn đúng ${n}/4 ý (+${pts}đ)</div>`}
+else{const v=parseFloat(($('ans').value||'').replace(',','.'));ok=v===q.a;pts=ok?25:0;sol=`<b>Đáp số: ${q.a}</b><br>`+F(q.s)}
+let gf='<div class=gift>📦 Hộp quà trống – cố gắng ở hộp sau nhé! 🎈</div>',bonus=0;
+if(ok){const G=[['🍀',5],['🎀',10],['🧧',15],['👑',20]],g=G[Math.floor(Math.random()*4)];bonus=g[1];gf=`<div class=gift>🎁➜🎉 Quà may mắn: ${g[0]} <b>+${bonus} điểm thưởng!</b></div>`}
+sc+=pts+bonus;$('sc').textContent=sc;done[cur]=1;fin++;$('dn').textContent=fin;const b=$('b'+cur);b.className='box '+(ok?'ok':'bad');b.disabled=true;b.innerHTML='<b>'+(ok?'🎉':'📦')+'</b>Câu '+(cur+1);
+if(q.p==1)M.querySelectorAll('.opt').forEach((o,j)=>{o.disabled=true;if(j==q.a)o.classList.add('c');else if(j==sel)o.classList.add('w')});
+M.innerHTML=`<div class=card><h3>${ok?'🎯 Chính xác!':'💡 Chưa đúng rồi'} (+${pts}đ)</h3>${gf}<div class=q>${F(q.q)}</div>${q.f||''}<div class=sol><b>Hướng dẫn giải chi tiết:</b><br>${sol}</div><button class=cl id=cl>${fin==22?'Xem kết quả 🏆':'Tiếp tục ➜'}</button></div>`;
+$('cl').onclick=()=>{cur=null;M.hidden=true;if(fin==22)end()}}
+function end(){const r=sc>=420?'🏆 Bậc thầy vectơ!':sc>=280?'🥇 Rất giỏi!':sc>=160?'🥈 Khá tốt, luyện thêm nhé!':'🥉 Hãy ôn lại và chơi lại nhé!';M.hidden=false;M.innerHTML=`<div class=card style="text-align:center"><h2>Hoàn thành 22 hộp quà!</h2><p style="font-size:2rem">⭐ ${sc} điểm</p><p>${r}</p><button class=go onclick=location.reload()>Chơi lại 🔄</button></div>`}
+</script></body></html>
